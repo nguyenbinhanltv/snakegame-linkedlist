@@ -1,4 +1,4 @@
-//Full màn hình ngang 75 Ô, dọc 31
+//Full màn hình ngang 32 Ô, dọc 32
 class Node {
     constructor(data = {x, y}, next = null, prev = null) {
         this.data = data;
@@ -77,6 +77,7 @@ window.onload = function() {
 
     //Dài rộng của 1 box snake
     const box = 25;
+    let score = 0;
 
     //load Audio
     let dead = new this.Audio();
@@ -133,8 +134,8 @@ window.onload = function() {
 
     //Tạo food
     let food = {
-        x : Math.round(Math.random() * (cvsW / box) + 1),
-        y : Math.round(Math.random() * (cvsH / box) + 1)
+        x : Math.round(Math.random() * ((cvsW / box) - 1)),
+        y : Math.round(Math.random() * ((cvsH / box) - 1))
     };
 
     //Vẽ food
@@ -148,14 +149,22 @@ window.onload = function() {
         ctx.strokeRect(x*box, y*box, box, box);
     }
 
+    //Vẽ score
+    function drawScore(x) {
+        ctx.fillStyle = "yellow";
+        ctx.fillText("score: " + x, 5, 15);
+    }
+
     //kiểm tra va chạm
     function checkCollision(x, y, list) {
         let headSnake = list.head;
-        for(let i = 0; i < list.length; i++) {
-            if(x == headSnake.data.x && y == headSnake.data.y) {
-                return true;
+        for(let i = 0; i < list.size; i++) {
+            while(headSnake != null) {
+                if(x == headSnake.data.x && y == headSnake.data.y) {
+                    return true;
+                }
+                headSnake = headSnake.next;
             }
-            headSnake = headSnake.next;
         }
         return false;
     }
@@ -174,14 +183,22 @@ window.onload = function() {
         //Vẽ food
         drawFood(food.x, food.y);
 
+        //Điểm
+        drawScore(score);
+
         //Đầu rắn mới
         let snakeX = snake.head.data.x;
         let snakeY = snake.head.data.y;
 
-        //Thua khi đụng tường
-        if(snakeX < 0 || snakeY < 0 || snakeX >= cvsW/box || snakeY >= cvsH/box || checkCollision(snakeX, snakeY, snake)) {
-            dead.play();
-            location.reload();
+        //Đi xuyên map
+        if(snakeX < 0) {
+            snakeX = cvsW / box;
+        } else if(snakeY < 0) {
+            snakeY = cvsH / box;
+        } else if(snakeX > cvsW / box - 1) {
+            snakeX = -1;
+        } else if(snakeY > cvsH / box - 1) {
+            snakeY = -1;
         }
 
         //Chuyển hướng đi snake
@@ -193,17 +210,28 @@ window.onload = function() {
         //snake ăn food
         if(snakeX == food.x && snakeY == food.y) {
             food = {
-                x : Math.round(Math.random() * (cvsW / box) + 1),
-                y : Math.round(Math.random() * (cvsH / box) + 1)
+                x : Math.round(Math.random() * ((cvsW / box) - 1)),
+                y : Math.round(Math.random() * ((cvsH / box) - 1))
             };
+
+            score++;
+
+            let outputxy = "(" + food.x + ", " + food.y + ")";
+            console.log(outputxy);
         } else {
              //Xóa đuôi snake
             snake.deleteTail();
+        }
+
+        //Kiểm tra va chạm
+        if(checkCollision(snakeX, snakeY, snake)) {
+            dead.play();
+            location.reload();
         }
 
         //Thêm đầu snake
         snake.insertHead({x : snakeX, y : snakeY});
     }
 
-    setInterval(draw, 60);
+    setInterval(draw, 80);
 }
