@@ -1,0 +1,20 @@
+canvas{
+    background-color: #000;
+}
+
+html{
+    font-size: 8px;
+    font-family: "Lato", Arial, sans-serif;
+}
+
+h1{
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 3px solid #000;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5rem 10rem;
+}
