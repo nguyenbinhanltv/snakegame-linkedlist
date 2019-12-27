@@ -213,6 +213,12 @@ window.onload = function() {
                 x : Math.round(Math.random() * ((cvsW / box) - 1)),
                 y : Math.round(Math.random() * ((cvsH / box) - 1))
             };
+            if(checkCollision(food.x, food.y, snake)) {
+                food = {
+                    x : Math.round(Math.random() * ((cvsW / box) - 1)),
+                    y : Math.round(Math.random() * ((cvsH / box) - 1))
+                };
+            }
 
             score++;
 
@@ -233,5 +239,5 @@ window.onload = function() {
         snake.insertHead({x : snakeX, y : snakeY});
     }
 
-    setInterval(draw, 80);
+    setInterval(draw, 50);
 }

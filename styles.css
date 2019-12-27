@@ -2,6 +2,8 @@ canvas{
     background-color: #000;
     display: block;
     margin: 0 auto;
+    width: 400px;
+    height: 400px;
 }
 
 html{
@@ -15,7 +17,7 @@ h1{
     letter-spacing: 2px;
     border: 3px solid #000;
     position: absolute;
-    top: 90%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 5rem 10rem;
